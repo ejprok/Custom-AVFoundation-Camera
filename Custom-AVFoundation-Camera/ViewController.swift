@@ -46,12 +46,7 @@ class ViewController: UIViewController {
         if let layer = cameraPreviewLayer {
             view.layer.insertSublayer(layer, at: 0)
         }
-        
         session.startRunning()
-
-
-
-
     }
 
 
