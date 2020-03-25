@@ -41,6 +41,7 @@ class ViewController: UIViewController {
         }
 
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: session)
+        cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         cameraPreviewLayer?.frame = view.bounds
 
         if let layer = cameraPreviewLayer {
