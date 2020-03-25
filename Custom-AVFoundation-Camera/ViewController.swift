@@ -16,7 +16,14 @@ class ViewController: UIViewController {
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     var cameraCaptureOutput: AVCapturePhotoOutput?
 
-
+    @IBOutlet weak var previewImage: UIImageView!
+    
+    @IBAction func takePictureButton(_ sender: UIButton) {
+        let settings = AVCapturePhotoSettings()
+        cameraCaptureOutput?.capturePhoto(with: settings, delegate: self)
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initCaptureSession()
@@ -42,7 +49,9 @@ class ViewController: UIViewController {
 
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: session)
         cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        cameraPreviewLayer?.frame = view.bounds
+        let bounds = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height / 1.5)
+        
+        cameraPreviewLayer?.frame =  bounds
 
         if let layer = cameraPreviewLayer {
             view.layer.insertSublayer(layer, at: 0)
@@ -51,5 +60,17 @@ class ViewController: UIViewController {
     }
 
 
+}
+
+extension ViewController: AVCapturePhotoCaptureDelegate {
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if let unwrappedError = error {
+            print(unwrappedError.localizedDescription)
+        } else {
+            print("image captured")
+            let image = photo.fileDataRepresentation()
+            previewImage.image = UIImage(data: image!)
+        }
+    }
 }
 
